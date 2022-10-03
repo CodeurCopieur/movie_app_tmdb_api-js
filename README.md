@@ -1,1 +1,5 @@
-# movie_app_tmdb_api-js
+# Movie app based on TMDB API
+
+## 🛠 Skills
+Javascript, HTML, CSS...
+API : TMDB(themoviedb)
