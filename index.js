@@ -1,10 +1,20 @@
-var API_KEY = '';
+var API_KEY = 'api_key=1cf50e6248dc270629e802686245c2c8';
 var BASE_URL = 'https://api.themoviedb.org/3';
 var API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+ API_KEY;
 var IMG_URL = 'https://image.tmdb.org/t/p/w500';
 var searchURL = BASE_URL + '/search/movie?'+ API_KEY;
 var movies;
 var resultsEl = document.querySelector('.movie-list');
+var form = document.getElementById('form');
+var search = form.elements['search'];
+
+
+form.onsubmit = function(e) {
+  e.preventDefault();
+  var searchTerm = search.value;
+  search.value = ""
+  search ? getMovies(searchURL+'&query='+searchTerm) : getMovies(API_URL);
+}
 
 // TMDB
 
@@ -25,6 +35,16 @@ async function  getMovies(url) {
   })
 }
 
+function getColor(vote) {
+  if( vote >= 7 ) {
+    return 'green'
+  } else if( vote >= 5 ) {
+    return 'orange'
+  } else {
+    return 'red'
+  }
+}
+
 function showMovies(movies){
   console.log('showMovies', movies);
 
@@ -32,30 +52,30 @@ function showMovies(movies){
     movies.map( movie => (
       `
         <li  class="movie" data-genres="${movie.genre_ids}">
-          <a href="" class="movie-link">
+          <div class="movie-link">
             <div class="movie-poster">
                 <span class="backdrop-fill">
                   <picture>
-                    <img src="https://www.themoviedb.org/t/p/w440_and_h660_face${movie.backdrop_path}" alt="${movie.original_title}">
+                    <img src="${IMG_URL+movie.backdrop_path}" alt="${movie.original_title}">
                   </picture>
                 </span>
                 <span class="poster-fill">
                   <picture>
-                    <img src="https://image.tmdb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}" alt="movie.original_title">
+                    <img src="${IMG_URL+movie.poster_path}" alt="${movie.original_title}">
                   </picture>
               </span>
             </div>
             <div class="details">
-              <h3>${movie.original_title}</h3>
+              <h3>${movie.title}</h3>
               <p>${movie.release_date}</p>
               
-              <span class="green">${movie.vote_average}</span>
+              <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
             </div>
             <div class="overview">
               <h3>Overview</h3>
               <p>${movie.overview}</p>
             </div>
-          </a>
+          </div>
         </li>
       `
     )).join('')
