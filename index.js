@@ -6,6 +6,7 @@ var searchURL = BASE_URL + '/search/movie?'+ API_KEY;
 var movies;
 var resultsEl = document.querySelector('.movie-list');
 var form = document.getElementById('form');
+var tags = document.getElementById('tags');
 var search = form.elements['search'];
 
 
@@ -45,8 +46,11 @@ function getColor(vote) {
   }
 }
 
+function getGenres(genres) {
+  return genres
+}
+
 function showMovies(movies){
-  console.log('showMovies', movies);
 
   resultsEl.innerHTML = (
     movies.map( movie => (
@@ -68,12 +72,13 @@ function showMovies(movies){
             <div class="details">
               <h3>${movie.title}</h3>
               <p>${movie.release_date}</p>
-              
+              <ul>${getGenres(movie.genre_ids)}</ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
             </div>
             <div class="overview">
               <h3>Overview</h3>
               <p>${movie.overview}</p>
+              
             </div>
           </div>
         </li>
