@@ -1,5 +1,6 @@
-*,::before, ::after{
+*,::before, ::after, ul{
   margin: 0;padding: 0;box-sizing: border-box;
+  list-style: none;
 }
 
 // variable
@@ -39,6 +40,25 @@ header {
 img {
   height: auto;
   max-width: 100%;
+}
+
+#tags {
+  max-width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: .625rem auto;
+}
+
+.tag {
+  display: inline-block;
+  color: $primary-color;
+  background-color: #7378c5;
+  padding: .625rem .9375rem;
+  border-radius: 3.125rem;
+  margin: .3125rem;
+  cursor: pointer;
 }
 
 .movie-list {
