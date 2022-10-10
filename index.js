@@ -3,12 +3,13 @@ var BASE_URL = 'https://api.themoviedb.org/3';
 var API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+ API_KEY;
 var IMG_URL = 'https://image.tmdb.org/t/p/w500';
 var searchURL = BASE_URL + '/search/movie?'+ API_KEY;
+var searchGenres = BASE_URL +'/genre/movie/list?'+ API_KEY;
 var movies;
 var resultsEl = document.querySelector('.movie-list');
 var form = document.getElementById('form');
-var tags = document.getElementById('tags');
+var tagsEl = document.getElementById('tags');
 var search = form.elements['search'];
-
+var genres =[];
 
 form.onsubmit = function(e) {
   e.preventDefault();
@@ -18,11 +19,10 @@ form.onsubmit = function(e) {
 }
 
 // TMDB
-
-
+listGenres(searchGenres)
 getMovies(API_URL)
 
-async function  getMovies(url) {
+async function getMovies(url) {
   await fetch(url)
   .then( data => data.json())
   .then( data => {
@@ -30,6 +30,22 @@ async function  getMovies(url) {
       movies = data.results.map( element => element );
       movies ? showMovies(movies) : null;
     }
+  })
+  .catch( error => {
+    console.log(error);
+  })
+}
+
+async function listGenres(url) {
+  await fetch(url)
+  .then( data => data.json())
+  .then( data => {
+    let result = ""
+    data.genres.forEach( genre => {
+      result += `<li class="tag">${genre.name}</li>`
+    })
+
+    tagsEl.insertAdjacentHTML('beforeend', result)
   })
   .catch( error => {
     console.log(error);
