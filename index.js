@@ -8,8 +8,10 @@ var movies;
 var resultsEl = document.querySelector('.movie-list');
 var form = document.getElementById('form');
 var tagsEl = document.getElementById('tags');
+var liAll = document.querySelectorAll('#tags li');
 var search = form.elements['search'];
 var genres =[];
+var selectedGenre = [];
 
 form.onsubmit = function(e) {
   e.preventDefault();
@@ -17,6 +19,7 @@ form.onsubmit = function(e) {
   search.value = ""
   search ? getMovies(searchURL+'&query='+searchTerm) : getMovies(API_URL);
 }
+
 
 // TMDB
 listGenres(searchGenres)
@@ -42,14 +45,52 @@ async function listGenres(url) {
   .then( data => {
     let result = ""
     data.genres.forEach( genre => {
-      result += `<li class="tag">${genre.name}</li>`
+      result += `<li class="tag" id="${genre.id}">${genre.name}</li>`
     })
 
     tagsEl.insertAdjacentHTML('beforeend', result)
+    eventClick(tagsEl)
   })
   .catch( error => {
     console.log(error);
   })
+}
+
+function eventClick(params) {;
+  var allLi = Array.prototype.slice.call(params.children)
+
+  allLi.forEach( li => {
+    li.addEventListener('click', function() {
+      if(selectedGenre.length == 0) {
+        selectedGenre=li.id;
+      } else {
+        if(selectedGenre.includes(li.id)){
+            if(li.id === selectedGenre) {
+              selectedGenre="";
+            }
+        } else {
+          selectedGenre=li.id;
+        }
+      }
+      getMovies(API_URL+'&with_genres='+encodeURI(selectedGenre));
+      highlightSelection();
+    })
+
+  })
+}
+
+function highlightSelection() {
+
+  var tags = document.querySelectorAll('.tag');
+
+  tags.forEach( function(tag) {
+    tag.classList.remove('active');
+  })
+
+  if(selectedGenre.length) {
+      var highlightTag = document.getElementById(selectedGenre);
+      highlightTag.classList.add('active');
+  }
 }
 
 function getColor(vote) {
@@ -76,12 +117,12 @@ function showMovies(movies){
             <div class="movie-poster">
                 <span class="backdrop-fill">
                   <picture>
-                    <img src="${IMG_URL+movie.backdrop_path}" alt="${movie.original_title}">
+                    <img src="${movie.backdrop_path ? IMG_URL+movie.backdrop_path : "http://via.placeholder.com/1080x1580"}" alt="${movie.original_title}">
                   </picture>
                 </span>
                 <span class="poster-fill">
                   <picture>
-                    <img src="${IMG_URL+movie.poster_path}" alt="${movie.original_title}">
+                    <img src="${movie.poster_path ? IMG_URL+movie.poster_path : "http://via.placeholder.com/1080x1580"}" alt="${movie.original_title}">
                   </picture>
               </span>
             </div>
