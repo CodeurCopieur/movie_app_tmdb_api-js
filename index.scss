@@ -61,6 +61,10 @@ img {
   cursor: pointer;
 }
 
+.tag.active {
+  background-color: red;
+}
+
 .movie-list {
   display: flex;
   flex-wrap: wrap;
