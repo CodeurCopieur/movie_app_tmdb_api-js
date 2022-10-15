@@ -33,8 +33,9 @@ async function getMovies(url) {
   .then( data => {
     if(data){
       movies = data.results.map( element => element );
-      movies.length!== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
+      movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
     }
+    getGenres()
   })
   .catch( error => {
     console.log(error);
@@ -68,8 +69,30 @@ function getColor(vote) {
   }
 }
 
-function getGenres(genres) {
-  return genres
+function getGenres() {
+
+  var dataGenres = Array.prototype.slice.call(document.querySelectorAll('li[data-genres]'));
+  var elt;
+  var arrayGenre;
+  dataGenres.forEach( data => {
+    elt = data;
+    arrayGenre = data.dataset.genres.split(",");
+    nomGenre(elt, arrayGenre)
+  })
+
+}
+
+function nomGenre(a, b) {
+
+  var arrayG = []
+  for (let index = 0; index < b.length; index++) {
+    var element = b[index];
+    if(element) {
+      arrayG.push(document.getElementById(element).textContent)
+    }
+  }
+  a.querySelector('#listeGenre').textContent = arrayG.join(', ');
+
 }
 
 function showMovies(movies){
@@ -94,7 +117,7 @@ function showMovies(movies){
             <div class="details">
               <h3>${movie.title}</h3>
               <p>${movie.release_date}</p>
-              <ul>${getGenres(movie.genre_ids)}</ul>
+              <ul id="listeGenre"></ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
             </div>
             <div class="overview">
@@ -151,11 +174,13 @@ function highlightSelection() {
   removeClass()
   clearBtn()
 
-  if(selectedGenre.length != 0) {
+  if(selectedGenre.length !== 0) {
     selectedGenre.forEach( function(id) {
       var highlightTag = document.getElementById(id);
       highlightTag.classList.add('active');
     })
+  }else {
+    document.getElementById('clear').remove();
   }
 
 }
@@ -175,6 +200,7 @@ function clearBtn() {
       selectedGenre = []
       removeClass()
       getMovies(API_URL)
+      document.getElementById('clear').remove();
     })
 
     tagsEl.append(clear) 
