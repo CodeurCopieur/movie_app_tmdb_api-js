@@ -16,7 +16,9 @@ var selectedGenre = [];
 form.onsubmit = function(e) {
   e.preventDefault();
   var searchTerm = search.value;
-  search.value = ""
+  search.value = "";
+  selectedGenre = [];
+  removeClass();
   search ? getMovies(searchURL+'&query='+searchTerm) : getMovies(API_URL);
 }
 
