@@ -8,17 +8,23 @@ var movies;
 var resultsEl = document.querySelector('.movie-list');
 var form = document.getElementById('form');
 var tagsEl = document.getElementById('tags');
+var nbResult = document.getElementById('nbResult');
 var liAll = document.querySelectorAll('#tags li');
 var search = form.elements['search'];
 var genres =[];
 var selectedGenre = [];
+var searchTerm;
+var totalResults;
 
 form.onsubmit = function(e) {
   e.preventDefault();
-  var searchTerm = search.value;
+  searchTerm = search.value;
   search.value = "";
   selectedGenre = [];
   removeClass();
+  if(searchTerm.trim().length === 0) {
+    return;
+  }
   search ? getMovies(searchURL+'&query='+searchTerm) : getMovies(API_URL);
 }
 
@@ -32,8 +38,17 @@ async function getMovies(url) {
   .then( data => data.json())
   .then( data => {
     if(data){
-      movies = data.results.map( element => element );
+      console.log(data);
+      totalResults = data.total_results;
+      movies = data.results.map( function(element) { return element}  );
       movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
+
+      if(searchTerm) {
+        nbResult.textContent = `Nous avons trouvé ${totalResults} ${totalResults > 1 ? 'results' : 'result'} pour ${searchTerm}`;
+      } else {
+        nbResult.textContent = `Nous avons trouvé ${totalResults} ${totalResults > 1 ? 'results' : 'result'}`;
+      }
+      
     }
     getGenres()
   })
@@ -47,7 +62,7 @@ async function listGenres(url) {
   .then( data => data.json())
   .then( data => {
     let result = ""
-    data.genres.forEach( genre => {
+    data.genres.forEach( function(genre) {
       result += `<li class="tag" id="${genre.id}">${genre.name}</li>`
     })
 
@@ -91,7 +106,11 @@ function nomGenre(a, b) {
       arrayG.push(document.getElementById(element).textContent)
     }
   }
-  a.querySelector('#listeGenre').textContent = arrayG.join(', ');
+  
+  if(arrayG) {
+    a.querySelector('#listeGenre').textContent = arrayG.join(', ');
+  }
+  
 
 }
 
@@ -191,7 +210,7 @@ function clearBtn() {
   if (clearBtn) {
     clearBtn.classList.add('active');
   } else {
-    let clear = document.createElement('div');
+    let clear = document.createElement('button');
     clear.classList.add('tag', 'active');
     clear.id = 'clear';
     clear.textContent = 'Clear';
