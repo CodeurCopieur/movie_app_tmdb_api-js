@@ -9,7 +9,7 @@ $primary-color: #22254b;
 $secondary-color: #373b69;
 
 body{
-  // background-color: $primary-color;
+  background-color: $primary-color;
 }
 
 header {
@@ -71,6 +71,7 @@ img {
   text-align: center;
   font-weight: bold;
   margin: 0 auto;
+  color: #fff;
 }
 
 .movie-list {
