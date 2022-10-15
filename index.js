@@ -31,7 +31,7 @@ async function getMovies(url) {
   .then( data => {
     if(data){
       movies = data.results.map( element => element );
-      movies ? showMovies(movies) : null;
+      movies.length!== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
     }
   })
   .catch( error => {
