@@ -25,7 +25,7 @@ form.onsubmit = function(e) {
   if(searchTerm.trim().length === 0) {
     return;
   }
-  search ? getMovies(searchURL+'&query='+searchTerm) : getMovies(API_URL);
+  search ? getMovies(searchURL+'&query='+searchTerm, true) : getMovies(API_URL);
 }
 
 
@@ -33,7 +33,7 @@ form.onsubmit = function(e) {
 listGenres(searchGenres)
 getMovies(API_URL)
 
-async function getMovies(url) {
+async function getMovies(url, a) {
   await fetch(url)
   .then( data => data.json())
   .then( data => {
@@ -43,10 +43,10 @@ async function getMovies(url) {
       movies = data.results.map( function(element) { return element}  );
       movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
 
-      if(searchTerm) {
+      if(searchTerm && a) {
         nbResult.textContent = `Nous avons trouvé ${totalResults} ${totalResults > 1 ? 'results' : 'result'} pour ${searchTerm}`;
       } else {
-        nbResult.textContent = `Nous avons trouvé ${totalResults} ${totalResults > 1 ? 'results' : 'result'}`;
+        nbResult.textContent  = ""
       }
       
     }
