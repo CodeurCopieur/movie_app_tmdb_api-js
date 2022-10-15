@@ -57,22 +57,28 @@ async function listGenres(url) {
 }
 
 function eventClick(params) {;
-  var allLi = Array.prototype.slice.call(params.children)
+  var all = Array.prototype.slice.call(params.children)
 
-  allLi.forEach( li => {
+  all.forEach( li => {
     li.addEventListener('click', function() {
-      if(selectedGenre.length == 0) {
-        selectedGenre=li.id;
+      if(selectedGenre.length === 0) {
+
+        selectedGenre.push(li.id)
       } else {
         if(selectedGenre.includes(li.id)){
-            if(li.id === selectedGenre) {
-              selectedGenre="";
-            }
+            
+              selectedGenre.forEach(function(id, idx) {
+                if(li.id === id) {
+                  selectedGenre.splice(idx, 1)
+                }
+              })
+            
         } else {
-          selectedGenre=li.id;
+
+          selectedGenre.push(li.id)
         }
       }
-      getMovies(API_URL+'&with_genres='+encodeURI(selectedGenre));
+      getMovies(API_URL+'&with_genres='+encodeURI(selectedGenre.join(',')));
       highlightSelection();
     })
 
@@ -81,16 +87,21 @@ function eventClick(params) {;
 
 function highlightSelection() {
 
-  var tags = document.querySelectorAll('.tag');
+  var tags = Array.prototype.slice.call(tagsEl.children)
 
+  console.log(tags);
   tags.forEach( function(tag) {
-    tag.classList.remove('active');
+    tag.classList.remove('active')
   })
+  console.log(API_URL+'&with_genres='+encodeURI(selectedGenre.join(',')));
 
-  if(selectedGenre.length) {
-      var highlightTag = document.getElementById(selectedGenre);
+  if(selectedGenre.length != 0) {
+    selectedGenre.forEach( function(id) {
+      var highlightTag = document.getElementById(id);
       highlightTag.classList.add('active');
+    })
   }
+
 }
 
 function getColor(vote) {
