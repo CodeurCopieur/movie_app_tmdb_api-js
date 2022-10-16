@@ -9,14 +9,15 @@ $primary-color: #22254b;
 $secondary-color: #373b69;
 
 body{
-  background-color: $primary-color;
+  background-color: #e7e6ed;
 }
 
 header {
   padding: 1rem;
   display: flex;
   justify-content: flex-end;
-  background-color: $secondary-color;
+  background-color: #e7e6ed;
+  box-shadow: 0px -20px 20px 20px rgba(0, 0, 0, 0.1);
 }
 
 .search {
@@ -37,10 +38,14 @@ header {
   &:focus {
     outline: 0;
     background-color: $primary-color;
+
+    &::placeholder {
+      color: #fff;
+    }
   }
 
   &::placeholder {
-    color: #7378c5;
+    color:$secondary-color;
   }
 }
 
@@ -79,7 +84,7 @@ img {
 }
 
 #nbResult {
-  color: #fff;
+  color: $primary-color;
   font-size: 1.25rem;
   letter-spacing: 0.5px;
   margin-right: .5rem;
@@ -97,6 +102,7 @@ img {
   font-size: .75rem;
   border: 0;
   cursor: pointer;
+  box-shadow: 0px 10px 14px rgba(0, 0, 0, 0.25);
 }
 
 .title-error {
@@ -120,6 +126,7 @@ img {
     width: 100%;
     margin-bottom: 20px;
     background-color: #fff;
+    box-shadow: 0px 20px 20px -5px rgba(0, 0, 0, 0.2), 0px 3px 8px rgba(0, 0, 0, 0.42), 0px 40px 30px rgba(0, 0, 0, 0.1);
     
     &:hover .overview  {
       transform: translateY(0);
@@ -189,7 +196,8 @@ img {
       left: 0;
       right: 0;
       top: 0;
-      background-color: #22254bba;
+      box-shadow: inset 0px 2px 3px rgba(255, 255, 255, 0.4);
+      background: linear-gradient(0deg, rgba(28, 0, 200, 0.7), #7378c5), linear-gradient(0deg, rgba(68, 68, 68, 0.4), rgba(68, 68, 68, 0.2)), rgba(255, 255, 255, 0.6);
       color: #fff;
       padding: 1.5rem;
       height: 100%;
@@ -201,14 +209,20 @@ img {
         margin-bottom: 1rem;
       }
     }
-
-    
-    @media (max-width: 64rem) and (min-width: 48rem) {
-      width: 33.3%;
+    @media  (max-width: 64rem) and (min-width: 48rem) {
+      flex-basis: calc((100% - 2 * 40px)/2);
     }
     @media screen and (min-width: 64rem) {
-      width: 25%;
+      flex-basis: calc((100% - 2 * 20px)/3);
       transition: all .48s;
+
+      &:not(:nth-child(3n-2)) {
+        margin-left: 20px;
+      }
     }
+  }
+
+  @media  (max-width: 64rem) and (min-width: 48rem) {
+    justify-content: space-around;
   }
 }
