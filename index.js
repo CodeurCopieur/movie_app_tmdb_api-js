@@ -38,7 +38,6 @@ async function getMovies(url, a) {
   .then( data => data.json())
   .then( data => {
     if(data){
-      console.log(data);
       totalResults = data.total_results;
       movies = data.results.map( function(element) { return element}  );
       movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
@@ -67,7 +66,7 @@ async function listGenres(url) {
     })
 
     tagsEl.insertAdjacentHTML('beforeend', result)
-    eventClick(tagsEl)
+    selectedGenres(tagsEl)
   })
   .catch( error => {
     console.log(error);
@@ -82,6 +81,10 @@ function getColor(vote) {
   } else {
     return 'red'
   }
+}
+
+function getReverse(date) {
+  return date
 }
 
 function getGenres() {
@@ -135,7 +138,7 @@ function showMovies(movies){
             </div>
             <div class="details">
               <h3>${movie.title}</h3>
-              <p>${movie.release_date}</p>
+              <p>${getReverse(movie.release_date)}</p>
               <ul id="listeGenre"></ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
             </div>
@@ -151,7 +154,7 @@ function showMovies(movies){
   )
 }
 
-function eventClick(params) {;
+function selectedGenres(params) {;
   var all = Array.prototype.slice.call(params.children)
 
   all.forEach( li => {
