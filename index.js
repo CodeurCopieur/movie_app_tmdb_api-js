@@ -4,17 +4,31 @@ var API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+ API_KEY;
 var IMG_URL = 'https://image.tmdb.org/t/p/w500';
 var searchURL = BASE_URL + '/search/movie?'+ API_KEY;
 var searchGenres = BASE_URL +'/genre/movie/list?'+ API_KEY;
+
+var searchTerm;
+var totalResults;
 var movies;
-var resultsEl = document.querySelector('.movie-list');
+var genres = [];
+var selectedGenre = [];
+
+var currentPage = 1;
+var nextPage = 2;
+var prevPage = 3;
+var lastUrl = '';
+var totalPages = 100;
+
 var form = document.getElementById('form');
 var tagsEl = document.getElementById('tags');
 var nbResult = document.getElementById('nbResult');
+
+var prev = document.getElementById('prev');
+var current = document.getElementById('current');
+var next = document.getElementById('next');
+
+var resultsEl = document.querySelector('.movie-list');
 var liAll = document.querySelectorAll('#tags li');
 var search = form.elements['search'];
-var genres =[];
-var selectedGenre = [];
-var searchTerm;
-var totalResults;
+
 
 form.onsubmit = function(e) {
   e.preventDefault();
@@ -34,11 +48,19 @@ listGenres(searchGenres)
 getMovies(API_URL)
 
 async function getMovies(url, a) {
+  lastUrl = url;
   await fetch(url)
   .then( data => data.json())
   .then( data => {
     if(data){
+      console.log(data);
+
       totalResults = data.total_results;
+      currentPage = data.page;
+      prevPage = currentPage - 1;
+      nextPage = currentPage + 1;
+      totalPages = data.total_pages;
+
       movies = data.results.map( function(element) { return element}  );
       movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
 
