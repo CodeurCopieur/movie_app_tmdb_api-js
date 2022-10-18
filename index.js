@@ -53,7 +53,6 @@ async function getMovies(url, a) {
   .then( data => data.json())
   .then( data => {
     if(data){
-      console.log(data);
 
       totalResults = data.total_results;
       currentPage = data.page;
@@ -251,8 +250,38 @@ function clearBtn() {
   }
 }
 
+// prev.addEventListener('click', function() {
+//   if(prevPage > 0) {
+//     pageCall(prevPage)
+//   }
+// })
 next.addEventListener('click', function() {
   if(nextPage <= totalPages) {
     pageCall(nextPage)
   }
 })
+
+
+function pageCall(page) {
+  
+  let urlSplit = lastUrl.split('?'); // enlever le symbole '?'
+  let queryParams = urlSplit[1].split('&') // enlever le symbole '&'
+  let key = queryParams[queryParams.length-1].split('=')
+
+  if (key[0] != 'page') {
+    let url = lastUrl+'&page='+page;
+    getMovies(url)
+  } else {
+
+    key[1] = page.toString();
+    var a =  key.join('=')
+    queryParams[queryParams.length-1] = a;
+    var b = queryParams.join('&') 
+    // on regroupe l'array queryParams et regoupe l'ensemble des chaines de caractère avec '&' 
+    // ex : Array(3) [ "sort_by=popularity.desc", "api_key=1cf50e6248dc270629e802686245c2c8", "page=2" ]
+    // resultat : sort_by=popularity.desc&api_key=1cf50e6248dc270629e802686245c2c8&page=3
+    let url = urlSplit[0] + '?' + b;
+    getMovies(url)
+    
+  }
+}
