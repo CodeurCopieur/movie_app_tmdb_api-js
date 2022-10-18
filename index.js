@@ -250,3 +250,9 @@ function clearBtn() {
     tagsEl.append(clear) 
   }
 }
+
+next.addEventListener('click', function() {
+  if(nextPage <= totalPages) {
+    pageCall(nextPage)
+  }
+})
