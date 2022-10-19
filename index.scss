@@ -237,7 +237,6 @@ img {
 }
 
 .page {
-  padding: 20px;
   cursor: pointer;
 
   &.disabled {
@@ -247,6 +246,7 @@ img {
 }
 
 .current {
+  margin: 0 1.25rem;
   padding: 15px 20px;
   border-radius: 50%;
   border: 5px solid $secondary-color;
