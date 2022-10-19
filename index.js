@@ -68,6 +68,19 @@ async function getMovies(url, a) {
       } else {
         nbResult.textContent  = ""
       }
+
+      current.textContent = currentPage;
+
+      if(currentPage <= 1) {
+        prev.classList.add('disabled');
+        next.classList.remove('disabled');
+      } else if(currentPage >= totalPages) {
+        prev.classList.remove('disabled');
+        next.classList.add('disabled');
+      } else {
+        prev.classList.remove('disabled');
+        next.classList.remove('disabled');
+      }
       
     }
     getGenres()
@@ -250,11 +263,11 @@ function clearBtn() {
   }
 }
 
-// prev.addEventListener('click', function() {
-//   if(prevPage > 0) {
-//     pageCall(prevPage)
-//   }
-// })
+prev.addEventListener('click', function() {
+  if(prevPage > 0) {
+    pageCall(prevPage)
+  }
+})
 next.addEventListener('click', function() {
   if(nextPage <= totalPages) {
     pageCall(nextPage)
