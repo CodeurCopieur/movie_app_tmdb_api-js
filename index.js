@@ -24,6 +24,7 @@ var nbResult = document.getElementById('nbResult');
 var prev = document.getElementById('prev');
 var current = document.getElementById('current');
 var next = document.getElementById('next');
+var mainOffsetT = document.getElementById('main').offsetTop;
 
 var resultsEl = document.querySelector('.movie-list');
 var liAll = document.querySelectorAll('#tags li');
@@ -81,6 +82,11 @@ async function getMovies(url, a) {
         prev.classList.remove('disabled');
         next.classList.remove('disabled');
       }
+
+      window.scrollTo({
+        top: mainOffsetT,
+        behavior: "smooth"
+      })
       
     }
     getGenres()
@@ -156,7 +162,7 @@ function showMovies(movies){
   resultsEl.innerHTML = (
     movies.map( movie => (
       `
-        <li  class="movie" data-genres="${movie.genre_ids}">
+        <li  class="movie"data-id="${movie.id}" data-genres="${movie.genre_ids}">
           <div class="movie-link">
             <div class="movie-poster">
                 <span class="backdrop-fill">
