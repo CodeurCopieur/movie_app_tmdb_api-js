@@ -34,6 +34,10 @@ header {
   #search {
     width: 18.75rem;
   }
+
+  #form {
+    text-align: center;
+  }
 }
 
 .search {
@@ -147,8 +151,6 @@ img {
     &:hover .overview  {
       transform: translateY(0);
     }
-    // .movie-link{
-    //   text-decoration: none;}
     .movie-poster {
       position: relative;
     }
