@@ -89,7 +89,7 @@ async function getMovies(url, a) {
       })
       
     }
-    getGenres()
+    getGenresOrId()
   })
   .catch( error => {
     console.log(error);
@@ -127,15 +127,23 @@ function getReverse(date) {
   return date
 }
 
-function getGenres() {
+function getGenresOrId() {
 
   var dataGenres = Array.prototype.slice.call(document.querySelectorAll('li[data-genres]'));
   var elt;
   var arrayGenre;
-  dataGenres.forEach( data => {
+  dataGenres.forEach( function(data){
     elt = data;
     arrayGenre = data.dataset.genres.split(",");
     nomGenre(elt, arrayGenre)
+  })
+
+
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.know-more'));
+  btns.forEach( function(btn) {
+    btn.addEventListener('click', function() {
+      console.log(btn.id);
+    })
   })
 
 }
@@ -162,7 +170,7 @@ function showMovies(movies){
   resultsEl.innerHTML = (
     movies.map( movie => (
       `
-        <li  class="movie"data-id="${movie.id}" data-genres="${movie.genre_ids}">
+        <li  class="movie" data-genres="${movie.genre_ids}">
           <div class="movie-link">
             <div class="movie-poster">
                 <span class="backdrop-fill">
@@ -181,7 +189,7 @@ function showMovies(movies){
               <p>${getReverse(movie.release_date)}</p>
               <ul id="listeGenre"></ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
-              <button class="know-more">savoir plus</button>
+              <button class="know-more" id="${movie.id}">savoir plus</button>
             </div>
             <div class="overview">
               <h3>Overview</h3>
@@ -279,7 +287,6 @@ next.addEventListener('click', function() {
     pageCall(nextPage)
   }
 })
-
 
 function pageCall(page) {
   
