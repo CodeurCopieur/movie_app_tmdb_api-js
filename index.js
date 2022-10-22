@@ -1,4 +1,4 @@
-var API_KEY = 'api_key=1cf50e6248dc270629e802686245c2c8';
+var API_KEY = 'api_key=cc4c125990f5777406886df6fdb3e266';
 var BASE_URL = 'https://api.themoviedb.org/3';
 var API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&'+ API_KEY;
 var IMG_URL = 'https://image.tmdb.org/t/p/w500';
@@ -181,11 +181,11 @@ function showMovies(movies){
               <p>${getReverse(movie.release_date)}</p>
               <ul id="listeGenre"></ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
+              <button class="know-more">savoir plus</button>
             </div>
             <div class="overview">
               <h3>Overview</h3>
               <p>${movie.overview}</p>
-              
             </div>
           </div>
         </li>
