@@ -89,7 +89,7 @@ async function getMovies(url, a) {
       })
       
     }
-    getGenresOrId()
+    getGenresAndId()
   })
   .catch( error => {
     console.log(error);
@@ -113,6 +113,14 @@ async function listGenres(url) {
   })
 }
 
+async function getDetails (id) {
+  await fetch(BASE_URL + '/movie/' +id+ '?'+ API_KEY)
+  .then( function (data) { return data.json()})
+  .then( function (data) {
+    console.log(data);
+  })
+}
+
 function getColor(vote) {
   if( vote >= 7 ) {
     return 'green'
@@ -127,7 +135,7 @@ function getReverse(date) {
   return date
 }
 
-function getGenresOrId() {
+function getGenresAndId() {
 
   var dataGenres = Array.prototype.slice.call(document.querySelectorAll('li[data-genres]'));
   var elt;
@@ -143,6 +151,7 @@ function getGenresOrId() {
   btns.forEach( function(btn) {
     btn.addEventListener('click', function() {
       console.log(btn.id);
+      getDetails(btn.id)
     })
   })
 
