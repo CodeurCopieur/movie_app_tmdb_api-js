@@ -63,17 +63,6 @@ header {
     transform: translateX(-3.125rem);
   }
   }
-  
-  @keyframes animate {
-  from {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  to {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-  }
 
 .header_pagination {
   top: 0;
@@ -106,6 +95,7 @@ header {
   height: 100%;
   background: #fff;
   position: relative;
+  box-shadow: rgba(255, 255, 255, 0.22) 0 2px 4px 0;
 }
 
 .modal {
