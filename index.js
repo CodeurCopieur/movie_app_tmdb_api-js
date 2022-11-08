@@ -10,6 +10,7 @@ var totalResults;
 var movies;
 var genres = [];
 var selectedGenre = [];
+var detailsMovie = [];
 
 var currentPage = 1;
 var nextPage = 2;
@@ -149,16 +150,16 @@ function getGenresAndId() {
 
   var btns = Array.prototype.slice.call(document.querySelectorAll('.know-more'));
   btns.forEach( function(btn) {
-    btn.addEventListener('click', function() {
-      console.log(btn.id);
+    btn.addEventListener('click', function({target}) {
       getDetails(btn.id)
+      openModal(target)
     })
   })
 
 }
 
 function nomGenre(a, b) {
-
+  
   var arrayG = []
   for (let index = 0; index < b.length; index++) {
     var element = b[index];
@@ -198,7 +199,7 @@ function showMovies(movies){
               <p>${getReverse(movie.release_date)}</p>
               <ul id="listeGenre"></ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
-              <button class="know-more" id="${movie.id}">savoir plus</button>
+              <a class="know-more" href="#modal1" role="link" id="${movie.id}">savoir plus</a>
             </div>
             <div class="overview">
               <h3>Overview</h3>
@@ -319,4 +320,27 @@ function pageCall(page) {
     getMovies(url)
     
   }
+}
+
+
+var open = document.querySelectorAll('.know-more');
+var headerClose = document.querySelector('#headerClose');
+open.forEach( btn => {
+  btn.addEventListener('click', openModal)
+})
+headerClose.addEventListener('click', hiddenModal)
+
+function hiddenModal() {
+  modal = document.getElementById('modal1');
+  modal.setAttribute('aria-modal', 'false');
+}
+
+function openModal(elt) {
+  var target = elt;
+  var anchor = target.getAttribute('href');
+  var s = anchor.substr(anchor.indexOf("#"));
+  console.log(s);
+
+  var modal = document.querySelector(s);
+  modal.setAttribute('aria-modal', 'true');
 }
