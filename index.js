@@ -118,7 +118,11 @@ async function getDetails (id) {
   await fetch(BASE_URL + '/movie/' +id+ '?'+ API_KEY)
   .then( function (data) { return data.json()})
   .then( function (data) {
-    console.log(data);
+    
+    detailsMovie = data
+
+    const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = detailsMovie
+    console.log(original_title);
   })
 }
 
@@ -339,7 +343,6 @@ function openModal(elt) {
   var target = elt;
   var anchor = target.getAttribute('href');
   var s = anchor.substr(anchor.indexOf("#"));
-  console.log(s);
 
   var modal = document.querySelector(s);
   modal.setAttribute('aria-modal', 'true');
