@@ -122,7 +122,9 @@ async function getDetails (id) {
     detailsMovie = data
 
     const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = detailsMovie
-    console.log(original_title);
+
+    var releaseDate = getDate(release_date)
+    console.log(releaseDate);
   })
 }
 
@@ -136,8 +138,10 @@ function getColor(vote) {
   }
 }
 
-function getReverse(date) {
-  return date
+function getDate(date) {
+  const str = date;
+  const res = new Date(str);
+  return res.toLocaleDateString()
 }
 
 function getGenresAndId() {
@@ -200,7 +204,7 @@ function showMovies(movies){
             </div>
             <div class="details">
               <h3>${movie.title}</h3>
-              <p>${getReverse(movie.release_date)}</p>
+              <p>${getDate(movie.release_date)}</p>
               <ul id="listeGenre"></ul>
               <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
               <a class="know-more" href="#modal1" role="link" id="${movie.id}">savoir plus</a>
