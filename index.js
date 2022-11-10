@@ -119,12 +119,30 @@ async function getDetails (id) {
   .then( function (data) { return data.json()})
   .then( function (data) {
     
-    detailsMovie = data
+    if(data){
+      detailsMovie = data;
 
-    const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = detailsMovie
+      const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = detailsMovie
 
-    var releaseDate = getDate(release_date)
-    console.log(releaseDate);
+      var releaseDate = getDate(release_date)
+      console.log(title, releaseDate, genres, popularity, revenue, vote_average, vote_count);
+    }
+    
+  })
+}
+
+async function getVideos(id) {
+  await fetch(BASE_URL + '/movie/' +id+ '/videos?'+ API_KEY)
+  .then( function (data) { return data.json()})
+  .then( function (data) {
+    
+    if(data){
+      console.log(data);
+      if(data.results.length > 0) {
+
+      }
+    }
+    
   })
 }
 
@@ -160,6 +178,7 @@ function getGenresAndId() {
   btns.forEach( function(btn) {
     btn.addEventListener('click', function({target}) {
       getDetails(btn.id)
+      getVideos(btn.id)
       openModal(target)
     })
   })
