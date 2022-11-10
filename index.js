@@ -11,6 +11,7 @@ var movies;
 var genres = [];
 var selectedGenre = [];
 var detailsMovie = [];
+var embed = []
 
 var currentPage = 1;
 var nextPage = 2;
@@ -26,6 +27,10 @@ var prev = document.getElementById('prev');
 var current = document.getElementById('current');
 var next = document.getElementById('next');
 var mainOffsetT = document.getElementById('main').offsetTop;
+
+var videosMovie = document.getElementById('videos-movie');
+var leftArrow = document.getElementById('left-arrow');
+var rightArrow = document.getElementById('right-arrow');
 
 var resultsEl = document.querySelector('.movie-list');
 var liAll = document.querySelectorAll('#tags li');
@@ -46,9 +51,10 @@ form.onsubmit = function(e) {
 
 
 // TMDB
-listGenres(searchGenres)
-getMovies(API_URL)
-
+window.addEventListener('load', () => {
+  listGenres(searchGenres)
+  getMovies(API_URL)
+})
 async function getMovies(url, a) {
   lastUrl = url;
   await fetch(url)
@@ -84,10 +90,10 @@ async function getMovies(url, a) {
         next.classList.remove('disabled');
       }
 
-      window.scrollTo({
-        top: mainOffsetT,
-        behavior: "smooth"
-      })
+      // window.scrollTo({
+      //   top: mainOffsetT,
+      //   behavior: "smooth"
+      // })
       
     }
     getGenresAndId()
@@ -137,12 +143,41 @@ async function getVideos(id) {
   .then( function (data) {
     
     if(data){
-      console.log(data);
       if(data.results.length > 0) {
 
+        console.log(data.results);
+        // let last = data.results.pop();
+        // const {key, name}= last
+        // embed.push(`<iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+        data.results.forEach( ({name, key, site, type}) => {
+          if(site === 'YouTube' && type === 'Trailer') {
+            embed.push(`<iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+          }
+        })
+
+        videosMovie.innerHTML += embed.join('');
+        activeSlide = 0;
+        showVideos();
+      } else {
+        videosMovie.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
       }
     }
     
+  })
+}
+
+var activeSlide = 0;
+
+function showVideos() {
+  let embedClasses =  document.querySelectorAll('.embed');
+  embedClasses.forEach( (embed, id) => {
+    if(activeSlide === id) {
+      embed.classList.add('show')
+      embed.classList.remove('hide')
+    } else {
+      embed.classList.add('hide')
+      embed.classList.remove('show')
+    }
   })
 }
 
@@ -331,6 +366,11 @@ function pageCall(page) {
   let queryParams = urlSplit[1].split('&') // enlever le symbole '&'
   let key = queryParams[queryParams.length-1].split('=')
 
+  window.scrollTo({
+    top: mainOffsetT,
+    behavior: "smooth"
+  })
+
   if (key[0] != 'page') {
     let url = lastUrl+'&page='+page;
     getMovies(url)
@@ -360,6 +400,9 @@ headerClose.addEventListener('click', hiddenModal)
 function hiddenModal() {
   modal = document.getElementById('modal1');
   modal.setAttribute('aria-modal', 'false');
+  detailsMovie = [];
+  embed = []
+  videosMovie.innerHTML = "";
 }
 
 function openModal(elt) {
