@@ -394,13 +394,26 @@ img {
   font-weight: 600;
 }
 
-// footer {
-//   padding: 16px;
-//   background-color: #e7e6ed;
-//   box-shadow: 0rem -1.25rem 1.25rem 1.25rem rgba(0,0,0,.1);
-//   text-align: center;
+.embed.hide {
+  display: none;
+}
 
-  
+.embed.show {
+  display: inline-block;
+}
 
+.videos-movie {
+  position: relative;
+}
 
-// }
+.arrow {
+  position: absolute;
+}
+
+.left-arrow {
+  left: 10%;
+}
+
+.right-arrow {
+  right: 10%;
+}
