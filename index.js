@@ -29,8 +29,7 @@ var next = document.getElementById('next');
 var mainOffsetT = document.getElementById('main').offsetTop;
 
 var videosMovie = document.getElementById('videos-movie');
-var leftArrow = document.getElementById('left-arrow');
-var rightArrow = document.getElementById('right-arrow');
+var detailsMovie = document.getElementById('details-movie');
 
 var resultsEl = document.querySelector('.movie-list');
 var liAll = document.querySelectorAll('#tags li');
@@ -69,7 +68,7 @@ async function getMovies(url, a) {
       totalPages = data.total_pages;
 
       movies = data.results.map( function(element) { return element}  );
-      movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
+      movies.length !== 0  ? showMovies(movies) : resultsEl.innerHTML = '<h1 class="title">aucun résultat trouvé</h1>';
 
       if(searchTerm && a) {
         nbResult.textContent = `Nous avons trouvé ${totalResults} ${totalResults > 1 ? 'results' : 'result'} pour ${searchTerm}`;
@@ -89,12 +88,6 @@ async function getMovies(url, a) {
         prev.classList.remove('disabled');
         next.classList.remove('disabled');
       }
-
-      // window.scrollTo({
-      //   top: mainOffsetT,
-      //   behavior: "smooth"
-      // })
-      
     }
     getGenresAndId()
   })
@@ -126,12 +119,15 @@ async function getDetails (id) {
   .then( function (data) {
     
     if(data){
-      detailsMovie = data;
+      dataMovie = data;
+      let result = '';
+      const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = dataMovie
 
-      const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = detailsMovie
+      var releaseDate = getDate(release_date);
 
-      var releaseDate = getDate(release_date)
-      console.log(title, releaseDate, genres, popularity, revenue, vote_average, vote_count);
+      result+= `<span>${title}</span>`
+
+      detailsMovie.insertAdjacentHTML('beforeend', result)
     }
     
   })
@@ -145,39 +141,22 @@ async function getVideos(id) {
     if(data){
       if(data.results.length > 0) {
 
-        console.log(data.results);
-        // let last = data.results.pop();
-        // const {key, name}= last
-        // embed.push(`<iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
-        data.results.forEach( ({name, key, site, type}) => {
-          if(site === 'YouTube' && type === 'Trailer') {
-            embed.push(`<iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
-          }
-        })
-
-        videosMovie.innerHTML += embed.join('');
-        activeSlide = 0;
-        showVideos();
+  
+        let last = data.results.pop();
+        const {key, name} = last
+        embed.push(`<iframe id="iframe-cont" width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+        // data.results.forEach( ({name, key, site, type}) => {
+        //   if(site === 'YouTube' && type === 'Trailer') {
+        //     embed.push(`<iframe width="560" height="315" src="https://www.youtube.com/embed/${key}" title="${name}" class="embed hide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+        //   }
+        // })
+        videosMovie.innerHTML = embed
+        // videosMovie.innerHTML += embed.join('');
       } else {
-        videosMovie.innerHTML = '<h1 class="title-error">aucun résultat trouvé</h1>';
+        videosMovie.innerHTML = '<h1 class="title">aucun résultat trouvé</h1>';
       }
     }
     
-  })
-}
-
-var activeSlide = 0;
-
-function showVideos() {
-  let embedClasses =  document.querySelectorAll('.embed');
-  embedClasses.forEach( (embed, id) => {
-    if(activeSlide === id) {
-      embed.classList.add('show')
-      embed.classList.remove('hide')
-    } else {
-      embed.classList.add('hide')
-      embed.classList.remove('show')
-    }
   })
 }
 
@@ -412,4 +391,46 @@ function openModal(elt) {
 
   var modal = document.querySelector(s);
   modal.setAttribute('aria-modal', 'true');
+  
+  setTimeout(() => {
+    console.clear()
+  }, 3500)
+  
 }
+
+var activeSlide = 0;
+var totalVideos = 0;
+function showVideos() {
+  let embedClasses =  document.querySelectorAll('.embed');
+  totalVideos = embedClasses.length;
+
+  embedClasses.forEach( (embed, id) => {
+    if(activeSlide === id) {
+      embed.classList.add('show')
+      embed.classList.remove('hide')
+    } else {
+      embed.classList.add('hide')
+      embed.classList.remove('show')
+    }
+  })
+}
+
+
+// leftArrow.addEventListener('click', function(e) {
+//   e.preventDefault()
+//   if(activeSlide > 0 ) {
+//     activeSlide--;
+//   } else {
+//     activeSlide = totalVideos.length-1;
+//   }
+//   showVideos() 
+// })
+// rightArrow.addEventListener('click', function(e) {
+//   e.preventDefault()
+//   if(activeSlide < (totalVideos.length - 1) ) {
+//     activeSlide++;
+//   } else {
+//     activeSlide = 0;
+//   }
+//   showVideos() 
+// })
