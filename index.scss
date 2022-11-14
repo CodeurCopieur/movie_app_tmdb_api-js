@@ -367,28 +367,28 @@ img {
   font-weight: 600;
 }
 
-.embed.hide {
-  display: none;
+.details-movie {
+  padding: 0rem 1rem;
+  
+  & > * {
+    margin-top: .5rem;
+  }
 }
-
-.embed.show {
+.details-movie h3 {
+  text-transform: capitalize;
+  margin: 1rem 0;
+  font-size: 1.1rem;
+  text-align: center;
+}
+.details-movie a {
   display: inline-block;
+  color: #22254b;
 }
-
+.details-movie p {
+  color: #121c4299;
+}
 .videos-movie {
   position: relative;
-}
-
-.arrow {
-  position: absolute;
-}
-
-.left-arrow {
-  left: 10%;
-}
-
-.right-arrow {
-  right: 10%;
 }
 
 .videos-movie {
