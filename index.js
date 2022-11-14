@@ -10,7 +10,7 @@ var totalResults;
 var movies;
 var genres = [];
 var selectedGenre = [];
-var detailsMovie = [];
+var dataMovie;
 var embed = []
 
 var currentPage = 1;
@@ -121,11 +121,22 @@ async function getDetails (id) {
     if(data){
       dataMovie = data;
       let result = '';
-      const {original_title, title, genres, popularity, release_date, revenue, vote_average, vote_count} = dataMovie
-
+      
+      const {original_title, title, genres, overview , homepage, popularity, release_date, revenue, vote_average, vote_count} = dataMovie
+console.log(dataMovie);
       var releaseDate = getDate(release_date);
 
-      result+= `<span>${title}</span>`
+      result+= `
+        <h3>${title}</h3>
+        <p>${overview}</p>
+        <a href="${homepage}" target="_blank" class="">Homepage</a>
+        <p>
+          Popularité: ${popularity} 
+          <br> Revenue: ${revenue} 
+          <br> Nombre de vote: ${vote_count}
+          <br> Moyenne des votes: ${ Math.round(vote_average)}
+        </p>
+      `
 
       detailsMovie.insertAdjacentHTML('beforeend', result)
     }
@@ -239,7 +250,7 @@ function showMovies(movies){
               <h3>${movie.title}</h3>
               <p>${getDate(movie.release_date)}</p>
               <ul id="listeGenre"></ul>
-              <span class="${getColor(movie.vote_average)}">${movie.vote_average}</span>
+              <span class="${getColor(movie.vote_average)}">${Math.round(movie.vote_average)}</span>
               <a class="know-more" href="#modal1" role="link" id="${movie.id}">savoir plus</a>
             </div>
             <div class="overview">
@@ -379,9 +390,14 @@ headerClose.addEventListener('click', hiddenModal)
 function hiddenModal() {
   modal = document.getElementById('modal1');
   modal.setAttribute('aria-modal', 'false');
-  detailsMovie = [];
+  dataMovie = "";
   embed = []
+  detailsMovie.innerHTML = "";
   videosMovie.innerHTML = "";
+
+  setTimeout(() => {
+    console.clear()
+  }, 3500)
 }
 
 function openModal(elt) {
@@ -397,40 +413,3 @@ function openModal(elt) {
   }, 3500)
   
 }
-
-var activeSlide = 0;
-var totalVideos = 0;
-function showVideos() {
-  let embedClasses =  document.querySelectorAll('.embed');
-  totalVideos = embedClasses.length;
-
-  embedClasses.forEach( (embed, id) => {
-    if(activeSlide === id) {
-      embed.classList.add('show')
-      embed.classList.remove('hide')
-    } else {
-      embed.classList.add('hide')
-      embed.classList.remove('show')
-    }
-  })
-}
-
-
-// leftArrow.addEventListener('click', function(e) {
-//   e.preventDefault()
-//   if(activeSlide > 0 ) {
-//     activeSlide--;
-//   } else {
-//     activeSlide = totalVideos.length-1;
-//   }
-//   showVideos() 
-// })
-// rightArrow.addEventListener('click', function(e) {
-//   e.preventDefault()
-//   if(activeSlide < (totalVideos.length - 1) ) {
-//     activeSlide++;
-//   } else {
-//     activeSlide = 0;
-//   }
-//   showVideos() 
-// })
