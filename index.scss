@@ -369,7 +369,8 @@ img {
 
 .details-movie {
   padding: 0rem 1rem;
-  
+  margin-bottom: 1rem;
+
   & > * {
     margin-top: .5rem;
   }
@@ -440,5 +441,9 @@ img {
   #iframe-cont {
     width: 90% !important;
     height: 90% !important;
+  }
+
+  .details-movie{
+    margin-bottom: 0;
   }
 }
