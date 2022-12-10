@@ -123,7 +123,6 @@ async function getDetails (id) {
       let result = '';
       
       const {original_title, title, genres, overview , homepage, popularity, release_date, revenue, vote_average, vote_count} = dataMovie
-console.log(dataMovie);
       var releaseDate = getDate(release_date);
 
       result+= `
@@ -131,7 +130,8 @@ console.log(dataMovie);
         <p>${overview}</p>
         <a href="${homepage}" target="_blank" class="">Homepage</a>
         <p>
-          Popularité: ${popularity} 
+          Date : ${releaseDate}
+          <br> Popularité: ${popularity} 
           <br> Revenue: ${revenue} 
           <br> Nombre de vote: ${vote_count}
           <br> Moyenne des votes: ${ Math.round(vote_average)}
